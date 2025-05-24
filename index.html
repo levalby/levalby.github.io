@@ -3,105 +3,548 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>AL</title>
+    <title>Alberto Levorato - Computer Engineer</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-        }
-        html {
-            scroll-behavior: smooth;
+            box-sizing: border-box;
         }
 
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--darker), var(--dark));
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+
+        /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: #001498;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
+            padding: 1rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
             z-index: 1000;
+            transition: all 0.3s ease;
         }
-        nav a {
-            margin: 0 15px;
+
+        nav.scrolled {
+            background: rgba(2, 6, 23, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
             text-decoration: none;
-            color: #000000;
-            font-weight: bold;
-        }
-        nav a:hover {
-            color: #66ccff;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
         }
 
-        header h1 {
-            font-size: 3rem;
-            margin: 0;
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
         }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 80%;
+        }
+
+        /* Sections */
         section {
-            padding: 60px 20px;
-            text-align: center;
             min-height: 100vh;
-        }
-        #home {
-            background-color: #0289f7;
-        }
-        #about {
-            background-color: #0289f7;
-        }
-        #contacts {
-            background-color: #0289f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
         }
 
-        
-        footer {
-            background-color: #003366;
-            color: #fff;
+        .container {
+            max-width: 1200px;
+            width: 100%;
             text-align: center;
-            padding: 10px;
+        }
+
+        /* Hero Section */
+        #home {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--light), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        /* About Section */
+        #about {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .project-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-tech {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        #contacts {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+        }
+
+        .contact-content {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 2rem;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 1.2rem;
+            color: var(--light);
+        }
+
+        .email-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            padding: 2rem;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-content {
+                padding: 2rem;
+                margin: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- Navigation Section -->
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#contacts">Contacts</a>
+    <div class="bg-animation"></div>
+    
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">AL</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Projects</a></li>
+                <li><a href="#contacts">Contact</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <!-- Home Section -->
+    <!-- Hero Section -->
     <section id="home">
-        <header>
-            <h1>Alberto Levorato</h1>
-        </header>
-        <p>Computer engineering student, University of Padua</p>
-        <p>Computer engineering exchange student, University of California Santa Cruz</p>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Alberto Levorato</h1>
+                <p class="hero-subtitle">Computer Engineering Student</p>
+                <p class="hero-description">
+                    University of Padua - UC Santa Cruz<br>
+                </p>
+                <a href="#about" class="cta-button">Explore My Work</a>
+            </div>
+        </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Projects Section -->
     <section id="about">
-        <h2>Projects</h2>
-        <p>Let’s Chat, University of California, Computer Networks</p>
-        <p>Performance Analysis of Digital Communication Systems, University of California, Digital Communications</p>
-        <p>Maglev System Controller, University of Padua, Control system</p>
-        <p>Monopoly C++, University of Padua, Programming Lab</p>
-        <p>ListAdapter and MapAdapter, University of Padua, Software Engineering</p>
+        <div class="container">
+            <h2 class="section-title scroll-reveal">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">Let's Chat</h3>
+                    <p class="project-description">Developed a TCP-based chat application using Python, implementing peer-to-peer (with clients-server
+initialization) communication via socket programming. Designed a protocol for user registration, peer
+connection, and message exchange. Ensured robust error handling, connection management, and
+adherence to half-duplex communication principles. Worked in a team of two.</p>
+                    <span class="project-tech">Computer Networks</span>
+                </div>
+                
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">Digital Communication Analysis</h3>
+                    <p class="project-description">Implemented MATLAB simulations to evaluate Bit Error Rate (BER) performance in AWGN and
+Rayleigh fading channels using BPSK, 4-PSK, and 8-PSK. Developed and analyzed Maximum
+Likelihood and Minimum Distance decoders, and assessed the impact of convolutional coding with
+Viterbi decoding on BER. Conducted Monte-Carlo simulations to compare theoretical and practical
+results, optimizing spectral efficiency and error correction techniques.
+</p>
+                    <span class="project-tech">Digital Communications</span>
+                </div>
+                
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">Maglev System Controller</h3>
+                    <p class="project-description">Developed mathematical models and control strategies for a magnetic levitation (maglev) system.
+Implemented and simulated nonlinear and linearized models in MATLAB/Simulink, designed PID
+controllers to enhance stability, and optimized system performance through feedback control techniques.</p>
+                    <span class="project-tech">Control Systems</span>
+                </div>
+                
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">Monopoly C++</h3>
+                    <p class="project-description">Designed and implemented a simplified version of Monopoly in C++, featuring human and computer
+players, a dynamic game board, and event logging. Utilized CMake for compilation, ensuring efficient
+memory management and code optimization.</p>
+                    <span class="project-tech">C++ Programming</span>
+                </div>
+                
+                <div class="project-card scroll-reveal">
+                    <h3 class="project-title">ListAdapter & MapAdapter</h3>
+                    <p class="project-description">Developed ListAdapter(MapAdapter) to adapt Vector(HashTable) (CLDC 1.1) to the List(Map)
+interface (J2SE 1.4.2), ensuring compatibility between Java ME and SE environments. Used Test-Driven
+Development (TDD) with JUnit for validation and generated full API documentation with Javadoc.</p>
+                    <span class="project-tech">Software Engineering</span>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Contacts Section -->
+    <!-- Contact Section -->
     <section id="contacts">
-        <h2>Contacts</h2>
-        <p>-@gmail.com</p>
+        <div class="container">
+            <h2 class="section-title scroll-reveal">Get In Touch</h2>
+            <div class="contact-content scroll-reveal">
+                <div class="contact-info">
+                    <svg class="email-icon" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    <span>levalby@gmail.com</span>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <!-- Footer Section -->
+    <!-- Footer -->
     <footer>
-        <p>&copy; mar 2025</p>
+        <p>&copy; 2025 Alberto Levorato.</p>
     </footer>
 
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add stagger effect to project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
 </body>
 </html>
